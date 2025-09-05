@@ -38,3 +38,8 @@ lerna-debug.log*
 .env*
 !.env.sample
 !.env.prod.sample
+/generated/prisma
+
+#Claude
+.claude/
+CLAUDE.md
