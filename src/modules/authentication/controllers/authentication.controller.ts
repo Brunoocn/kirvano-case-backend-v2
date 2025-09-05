@@ -1,16 +1,23 @@
-import { Body, Controller, Get, HttpCode, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+} from '@nestjs/common';
 
 import { SkipAuth } from 'src/common/decorators/skipAuth.decorator';
 import { LoginDTO } from '../dtos/login-user.dto';
 
 import { LoginService } from '../services/login/login.service';
-import { RegisterService } from '../services/register/register.service';
 
 import { RegisterDTO } from '../dtos/register-user.dto';
 import { LoginResponseDTO } from '../dtos/login-response.dto';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RegisterResponseDTO } from '../dtos/register-response.dto';
 import { UserDTO } from '../dtos/user.dto';
+import { RegisterService } from '../services/register/register.service';
 
 @ApiTags('Authentication')
 @Controller('authentication')
@@ -22,6 +29,7 @@ export class AuthenticationController {
 
   @ApiOperation({ summary: 'Verifica se o token está valido' })
   @Get('/token-valid')
+  @HttpCode(HttpStatus.OK)
   async validToken(): Promise<boolean> {
     return true;
   }
@@ -34,7 +42,7 @@ export class AuthenticationController {
   })
   @SkipAuth()
   @Post('/login')
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   async loginUser(
     @Body() { email, password }: LoginDTO,
   ): Promise<LoginResponseDTO> {
@@ -51,7 +59,7 @@ export class AuthenticationController {
   @ApiBody({ type: RegisterDTO })
   @SkipAuth()
   @Post('/register')
-  @HttpCode(201)
+  @HttpCode(HttpStatus.CREATED)
   async registerUser(
     @Body() { name, email, password }: RegisterDTO,
   ): Promise<UserDTO> {

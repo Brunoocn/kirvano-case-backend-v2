@@ -1,38 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsString,
-  IsUUID,
-  ValidateNested,
-} from 'class-validator';
+import { IsNotEmpty, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-
-class UserResponseDTO {
-  @ApiProperty({
-    example: '123e4567-e89b-12d3-a456-426614174000',
-    description: 'ID único do usuário',
-  })
-  @IsUUID()
-  @IsNotEmpty()
-  readonly id: string;
-
-  @ApiProperty({
-    example: 'John Doe',
-    description: 'Nome do usuário',
-  })
-  @IsString()
-  @IsNotEmpty()
-  readonly name: string;
-
-  @ApiProperty({
-    example: 'user@example.com',
-    description: 'Email do usuário',
-  })
-  @IsEmail()
-  @IsNotEmpty()
-  readonly email: string;
-}
+import { UserBaseDTO } from 'src/common/dtos/user-base.dto';
 
 export class LoginResponseDTO {
   @ApiProperty({
@@ -45,10 +14,10 @@ export class LoginResponseDTO {
 
   @ApiProperty({
     description: 'Dados do usuário logado',
-    type: UserResponseDTO,
+    type: UserBaseDTO,
   })
   @ValidateNested()
-  @Type(() => UserResponseDTO)
+  @Type(() => UserBaseDTO)
   @IsNotEmpty()
-  readonly user: UserResponseDTO;
+  readonly user: UserBaseDTO;
 }
