@@ -1,16 +1,21 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { IJSonPlaceholderProvider } from '../../providers/json-placeholder/IJsonPlaceholderProvider';
 import { TodoDTO } from '../../dtos/todo.dto';
 import { providersEnum } from 'src/shared/generic-enums/providers-enums';
+import { JsonPlaceholderProvider } from '../../providers/json-placeholder/implementations/json-placeholder-provider';
 
 @Injectable()
 export class FindAllTodosService {
   constructor(
     @Inject(providersEnum.IJSonPlaceholderProvider)
-    private readonly jsonPlaceholderProvider: IJSonPlaceholderProvider,
-  ) { }
+    private readonly jsonPlaceholderProvider: JsonPlaceholderProvider,
+  ) {}
 
   async execute(): Promise<TodoDTO[]> {
-    return await this.jsonPlaceholderProvider.getTodos();
+    try {
+      return await this.jsonPlaceholderProvider.getTodos();
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
 }

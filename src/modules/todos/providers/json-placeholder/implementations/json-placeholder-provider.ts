@@ -7,10 +7,11 @@ import { TodoDTO } from 'src/modules/todos/dtos/todo.dto';
 @Injectable()
 export class JsonPlaceholderProvider implements IJSonPlaceholderProvider {
   private jsonPlaceholderApi: Axios;
+  private apiUrl = 'https://jsonplaceholder.typicode.com';
 
   constructor() {
     this.jsonPlaceholderApi = axios.create({
-      baseURL: process.env.API_URL_JSON_PLACEHOLDER,
+      baseURL: this.apiUrl,
     });
   }
 
