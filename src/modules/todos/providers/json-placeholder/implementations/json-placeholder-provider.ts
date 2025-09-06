@@ -17,11 +17,19 @@ export class JsonPlaceholderProvider implements IJSonPlaceholderProvider {
 
   async getTodos(): Promise<TodoDTO[]> {
     const { data } = await this.jsonPlaceholderApi.get<TodoDTO[]>('/todos');
-    return data;
+    return data.map((todo) => ({
+      id: todo.id,
+      title: todo.title,
+      completed: todo.completed,
+    }));
   }
 
   async getTodoById(id: number): Promise<TodoDTO> {
     const { data } = await this.jsonPlaceholderApi.get<TodoDTO>(`/todos/${id}`);
-    return data;
+    return {
+      id: data.id,
+      title: data.title,
+      completed: data.completed,
+    };
   }
 }
