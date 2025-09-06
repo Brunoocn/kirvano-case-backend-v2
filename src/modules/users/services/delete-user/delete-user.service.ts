@@ -10,22 +10,13 @@ export class DeleteUserService {
     private userRepository: Repository<User>,
   ) {}
 
-  async execute(id: string) {
-    try {
-      const user = await this.findUserOrFail(id);
-
-      if (!user) {
-        throw new NotFoundException('Usuário não encontrado');
-      }
-
-      await this.userRepository.remove(user);
-    } catch (error) {
-      console.log(error, 'erro');
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-      throw new NotFoundException('Erro ao deletar o usuário');
+  async execute(id: string): Promise<void> {
+    const user = await this.findUserOrFail(id);
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
     }
+
+    await this.userRepository.remove(user);
   }
 
   private async findUserOrFail(id: string): Promise<User | null> {
