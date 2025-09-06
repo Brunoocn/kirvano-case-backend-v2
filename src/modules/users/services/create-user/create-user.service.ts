@@ -42,7 +42,6 @@ export class CreateUserService {
   async executeBatch(batchData: { users: CreateUserDTO[] }) {
     const { users } = batchData;
 
-    // Verificar emails duplicados no batch
     const emails = users.map((user) => user.email);
     const uniqueEmails = new Set(emails);
 
@@ -50,7 +49,6 @@ export class CreateUserService {
       throw new BadRequestException('Existem emails duplicados no batch');
     }
 
-    // Verificar se algum email já existe no banco
     const existingUsers = await this.userRepository
       .createQueryBuilder('user')
       .where('user.email IN (:...emails)', { emails })
@@ -63,7 +61,6 @@ export class CreateUserService {
       );
     }
 
-    // Validar senhas
     for (const userData of users) {
       if (!this.isPasswordLengthValid(userData.password)) {
         throw new BadRequestException(
@@ -72,7 +69,6 @@ export class CreateUserService {
       }
     }
 
-    // Criar usuários com senhas hasheadas
     const usersToCreate = await Promise.all(
       users.map(async (userData) => {
         const hashedPassword = await this.hashPassword(userData.password);
@@ -83,7 +79,6 @@ export class CreateUserService {
       }),
     );
 
-    // Salvar todos os usuários
     const savedUsers = await this.userRepository.save(usersToCreate);
 
     return savedUsers.map((user) => formatUserWithoutPassword(user));
