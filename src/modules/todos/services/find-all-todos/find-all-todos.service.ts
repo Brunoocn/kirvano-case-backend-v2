@@ -11,11 +11,6 @@ export class FindAllTodosService {
   ) {}
 
   async execute(): Promise<TodoDTO[]> {
-    try {
-      return await this.jsonPlaceholderProvider.getTodos();
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
+    return await this.jsonPlaceholderProvider.getTodos();
   }
 }
